@@ -396,6 +396,7 @@ class SingleDatePicker extends React.PureComponent {
       onFocusChange,
       focused,
       enableOutsideDays,
+      equalizeMonths,
       numberOfMonths,
       orientation,
       monthFormat,
@@ -479,6 +480,7 @@ class SingleDatePicker extends React.PureComponent {
           onFocusChange={onFocusChange}
           orientation={orientation}
           enableOutsideDays={enableOutsideDays}
+          equalizeMonths={equalizeMonths}
           numberOfMonths={numberOfMonths}
           monthFormat={monthFormat}
           withPortal={withAnyPortal}

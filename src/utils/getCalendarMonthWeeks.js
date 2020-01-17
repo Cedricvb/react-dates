@@ -6,6 +6,7 @@ export default function getCalendarMonthWeeks(
   month,
   enableOutsideDays,
   firstDayOfWeek = moment.localeData().firstDayOfWeek(),
+  equalizeMonths,
 ) {
   if (!moment.isMoment(month) || !month.isValid()) {
     throw new TypeError('`month` must be a valid moment object');
@@ -21,11 +22,16 @@ export default function getCalendarMonthWeeks(
   // calculate the exact first and last days to fill the entire matrix
   // (considering days outside month)
   const prevDays = ((firstOfMonth.day() + 7 - firstDayOfWeek) % 7);
-  const nextDays = ((firstDayOfWeek + 6 - lastOfMonth.day()) % 7);
+  let nextDays = ((firstDayOfWeek + 6 - lastOfMonth.day()) % 7);
   const firstDay = firstOfMonth.clone().subtract(prevDays, 'day');
   const lastDay = lastOfMonth.clone().add(nextDays, 'day');
 
-  const totalDays = lastDay.diff(firstDay, 'days') + 1;
+  let totalDays = lastDay.diff(firstDay, 'days') + 1;
+
+  if (equalizeMonths && totalDays < 6 * 7) {
+    totalDays = 6 * 7;
+    nextDays += 7;
+  }
 
   const currentDay = firstDay.clone();
   const weeksInMonth = [];

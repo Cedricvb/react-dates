@@ -57,6 +57,7 @@ const propTypes = forbidExtraProps({
 
   // calendar presentation props
   enableOutsideDays: PropTypes.bool,
+  equalizeMonths: PropTypes.bool,
   numberOfMonths: PropTypes.number,
   orientation: ScrollableOrientationShape,
   withPortal: PropTypes.bool,
@@ -124,6 +125,7 @@ const propTypes = forbidExtraProps({
 export const defaultProps = {
   // calendar presentation props
   enableOutsideDays: false,
+  equalizeMonths: false,
   numberOfMonths: 2,
   orientation: HORIZONTAL_ORIENTATION,
   withPortal: false,
@@ -650,13 +652,15 @@ class DayPicker extends React.PureComponent {
   }
 
   setCalendarMonthWeeks(currentMonth) {
-    const { numberOfMonths } = this.props;
+    const { numberOfMonths, equalizeMonths } = this.props;
 
     this.calendarMonthWeeks = [];
     let month = currentMonth.clone().subtract(1, 'months');
     const firstDayOfWeek = this.getFirstDayOfWeek();
     for (let i = 0; i < numberOfMonths + 2; i += 1) {
-      const numberOfWeeks = getNumberOfCalendarMonthWeeks(month, firstDayOfWeek);
+      const numberOfWeeks = equalizeMonths
+        ? 6
+        : getNumberOfCalendarMonthWeeks(month, firstDayOfWeek);
       this.calendarMonthWeeks.push(numberOfWeeks);
       month = month.add(1, 'months');
     }
@@ -733,6 +737,7 @@ class DayPicker extends React.PureComponent {
       onMonthChange,
       onYearChange,
       isRTL,
+      equalizeMonths,
     } = this.props;
 
     const {
@@ -752,13 +757,17 @@ class DayPicker extends React.PureComponent {
       newMonth.subtract(1, 'month');
       if (onPrevMonthClick) onPrevMonthClick(newMonth);
       const newInvisibleMonth = newMonth.clone().subtract(1, 'month');
-      const numberOfWeeks = getNumberOfCalendarMonthWeeks(newInvisibleMonth, firstDayOfWeek);
+      const numberOfWeeks = equalizeMonths
+        ? 6
+        : getNumberOfCalendarMonthWeeks(newInvisibleMonth, firstDayOfWeek);
       this.calendarMonthWeeks = [numberOfWeeks, ...this.calendarMonthWeeks.slice(0, -1)];
     } else if (monthTransition === NEXT_TRANSITION) {
       newMonth.add(1, 'month');
       if (onNextMonthClick) onNextMonthClick(newMonth);
       const newInvisibleMonth = newMonth.clone().add(numberOfMonths, 'month');
-      const numberOfWeeks = getNumberOfCalendarMonthWeeks(newInvisibleMonth, firstDayOfWeek);
+      const numberOfWeeks = equalizeMonths
+        ? 6
+        : getNumberOfCalendarMonthWeeks(newInvisibleMonth, firstDayOfWeek);
       this.calendarMonthWeeks = [...this.calendarMonthWeeks.slice(1), numberOfWeeks];
     } else if (monthTransition === MONTH_SELECTION_TRANSITION) {
       if (onMonthChange) onMonthChange(newMonth);
@@ -954,6 +963,7 @@ class DayPicker extends React.PureComponent {
 
     const {
       enableOutsideDays,
+      equalizeMonths,
       numberOfMonths,
       orientation,
       modifiers,
@@ -1122,6 +1132,7 @@ class DayPicker extends React.PureComponent {
                   setMonthTitleHeight={!monthTitleHeight ? this.setMonthTitleHeight : undefined}
                   translationValue={translationValue}
                   enableOutsideDays={enableOutsideDays}
+                  equalizeMonths={equalizeMonths}
                   firstVisibleMonthIndex={firstVisibleMonthIndex}
                   initialMonth={currentMonth}
                   isAnimating={isCalendarMonthGridAnimating}

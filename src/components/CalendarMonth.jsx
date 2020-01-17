@@ -35,6 +35,7 @@ const propTypes = forbidExtraProps({
   horizontalMonthPadding: nonNegativeInteger,
   isVisible: PropTypes.bool,
   enableOutsideDays: PropTypes.bool,
+  equalizeMonths: PropTypes.bool,
   modifiers: PropTypes.objectOf(ModifiersShape),
   orientation: ScrollableOrientationShape,
   daySize: nonNegativeInteger,
@@ -65,6 +66,7 @@ const defaultProps = {
   horizontalMonthPadding: 13,
   isVisible: true,
   enableOutsideDays: false,
+  equalizeMonths: false,
   modifiers: {},
   orientation: HORIZONTAL_ORIENTATION,
   daySize: DAY_SIZE,
@@ -99,6 +101,7 @@ class CalendarMonth extends React.PureComponent {
         props.month,
         props.enableOutsideDays,
         props.firstDayOfWeek == null ? moment.localeData().firstDayOfWeek() : props.firstDayOfWeek,
+        props.equalizeMonths,
       ),
     };
 
@@ -111,7 +114,12 @@ class CalendarMonth extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { month, enableOutsideDays, firstDayOfWeek } = nextProps;
+    const {
+      month,
+      enableOutsideDays,
+      firstDayOfWeek,
+      equalizeMonths,
+    } = nextProps;
     const {
       month: prevMonth,
       enableOutsideDays: prevEnableOutsideDays,
@@ -127,6 +135,7 @@ class CalendarMonth extends React.PureComponent {
           month,
           enableOutsideDays,
           firstDayOfWeek == null ? moment.localeData().firstDayOfWeek() : firstDayOfWeek,
+          equalizeMonths,
         ),
       });
     }

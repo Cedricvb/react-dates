@@ -7,6 +7,7 @@ export default function getVisibleDays(
   enableOutsideDays,
   withoutTransitionMonths,
   firstDayOfWeek = moment.localeData().firstDayOfWeek(),
+  equalizeMonths,
 ) {
   if (!moment.isMoment(month)) return {};
 
@@ -47,8 +48,16 @@ export default function getVisibleDays(
       // days belonging to the next month
       const nextDays = 6 - ((7 - firstDayOfWeek + lastOfMonth.weekday()) % 7);
       for (let m = 0; m < nextDays; m += 1) {
-        const nextDay = currentDay.clone().add(m, 'day');
-        visibleDays.push(nextDay);
+        visibleDays.push(currentDay.clone());
+        currentDay.add(1, 'day');
+      }
+    }
+
+    // add extra week if needed
+    if (equalizeMonths) {
+      while (visibleDays.length < 6 * 7) {
+        visibleDays.push(currentDay.clone());
+        currentDay.add(1, 'day');
       }
     }
 

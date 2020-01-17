@@ -34,6 +34,7 @@ import {
 const propTypes = forbidExtraProps({
   ...withStylesPropTypes,
   enableOutsideDays: PropTypes.bool,
+  equalizeMonths: PropTypes.bool,
   firstVisibleMonthIndex: PropTypes.number,
   horizontalMonthPadding: nonNegativeInteger,
   initialMonth: momentPropTypes.momentObj,
@@ -69,6 +70,7 @@ const propTypes = forbidExtraProps({
 
 const defaultProps = {
   enableOutsideDays: false,
+  equalizeMonths: false,
   firstVisibleMonthIndex: 0,
   horizontalMonthPadding: 13,
   initialMonth: moment(),
@@ -238,6 +240,7 @@ class CalendarMonthGrid extends React.PureComponent {
   render() {
     const {
       enableOutsideDays,
+      equalizeMonths,
       firstVisibleMonthIndex,
       horizontalMonthPadding,
       isAnimating,
@@ -334,6 +337,7 @@ class CalendarMonthGrid extends React.PureComponent {
                 month={month}
                 isVisible={isVisible}
                 enableOutsideDays={enableOutsideDays}
+                equalizeMonths={equalizeMonths}
                 modifiers={modifiers[monthString]}
                 monthFormat={monthFormat}
                 orientation={orientation}

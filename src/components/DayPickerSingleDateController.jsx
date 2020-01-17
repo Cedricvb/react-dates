@@ -63,6 +63,7 @@ const propTypes = forbidExtraProps({
   verticalBorderSpacing: nonNegativeInteger,
   transitionDuration: nonNegativeInteger,
   horizontalMonthPadding: nonNegativeInteger,
+  equalizeMonths: PropTypes.bool,
 
   dayPickerNavigationInlineStyles: PropTypes.object,
   navPosition: NavPositionShape,
@@ -124,6 +125,7 @@ const defaultProps = {
   verticalBorderSpacing: undefined,
   transitionDuration: undefined,
   horizontalMonthPadding: 13,
+  equalizeMonths: null,
 
   dayPickerNavigationInlineStyles: null,
   navPosition: NAV_POSITION_TOP,
@@ -388,6 +390,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
       numberOfMonths,
       enableOutsideDays,
       firstDayOfWeek,
+      equalizeMonths,
     } = this.props;
     const { currentMonth, visibleDays } = this.state;
 
@@ -403,6 +406,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
       enableOutsideDays,
       undefined,
       firstDayOfWeek,
+      equalizeMonths,
     );
 
     this.setState({
@@ -422,6 +426,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
       numberOfMonths,
       enableOutsideDays,
       firstDayOfWeek,
+      equalizeMonths,
     } = this.props;
     const { currentMonth, visibleDays } = this.state;
 
@@ -437,6 +442,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
       enableOutsideDays,
       undefined,
       firstDayOfWeek,
+      equalizeMonths,
     );
 
     const newCurrentMonth = currentMonth.clone().add(1, 'month');
@@ -457,6 +463,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
       enableOutsideDays,
       orientation,
       firstDayOfWeek,
+      equalizeMonths,
     } = this.props;
     const withoutTransitionMonths = orientation === VERTICAL_SCROLLABLE;
     const newVisibleDays = getVisibleDays(
@@ -465,6 +472,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
       enableOutsideDays,
       withoutTransitionMonths,
       firstDayOfWeek,
+      equalizeMonths,
     );
 
     this.setState({
@@ -479,6 +487,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
       enableOutsideDays,
       orientation,
       firstDayOfWeek,
+      equalizeMonths,
     } = this.props;
     const withoutTransitionMonths = orientation === VERTICAL_SCROLLABLE;
     const newVisibleDays = getVisibleDays(
@@ -487,6 +496,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
       enableOutsideDays,
       withoutTransitionMonths,
       firstDayOfWeek,
+      equalizeMonths,
     );
 
     this.setState({
@@ -496,7 +506,12 @@ export default class DayPickerSingleDateController extends React.PureComponent {
   }
 
   onMultiplyScrollableMonths() {
-    const { numberOfMonths, enableOutsideDays, firstDayOfWeek } = this.props;
+    const {
+      numberOfMonths,
+      enableOutsideDays,
+      firstDayOfWeek,
+      equalizeMonths,
+    } = this.props;
     const { currentMonth, visibleDays } = this.state;
 
     const numberOfVisibleMonths = Object.keys(visibleDays).length;
@@ -507,6 +522,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
       enableOutsideDays,
       true,
       firstDayOfWeek,
+      equalizeMonths,
     );
 
     this.setState({
@@ -567,6 +583,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
       orientation,
       enableOutsideDays,
       firstDayOfWeek,
+      equalizeMonths,
     } = nextProps;
     const initialVisibleMonthThunk = initialVisibleMonth || (date ? () => date : () => this.today);
     const currentMonth = initialVisibleMonthThunk();
@@ -577,6 +594,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
       enableOutsideDays,
       withoutTransitionMonths,
       firstDayOfWeek,
+      equalizeMonths,
     ));
     return { currentMonth, visibleDays };
   }
@@ -657,6 +675,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
       transitionDuration,
       verticalBorderSpacing,
       horizontalMonthPadding,
+      equalizeMonths,
     } = this.props;
 
     const { currentMonth, visibleDays } = this.state;
@@ -711,6 +730,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
         transitionDuration={transitionDuration}
         verticalBorderSpacing={verticalBorderSpacing}
         horizontalMonthPadding={horizontalMonthPadding}
+        equalizeMonths={equalizeMonths}
       />
     );
   }
